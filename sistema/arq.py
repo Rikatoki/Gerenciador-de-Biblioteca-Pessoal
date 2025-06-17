@@ -34,3 +34,14 @@ def listarLivros():
                 print(f'Id:[{i+1}] Título: {v[0]} / Autor: {v[1]} / Ano: {v[2]} / Gênero: {v[3]}')
     except Exception as erro:
         print(f'Erro: {erro}')
+
+def buscarLivro(busca):
+    try:
+        with open(arquivo,'rt',encoding='utf-8') as dados:
+            livros = dados.readlines()
+            for l in livros:
+                v = l.strip().split(';')
+                if busca in l:
+                    print(f'Título: {v[0]} / Autor: {v[1]} / Ano: {v[2]} / Gênero: {v[3]}')
+    except Exception as  erro:
+        print(f'Erro: {erro}')
