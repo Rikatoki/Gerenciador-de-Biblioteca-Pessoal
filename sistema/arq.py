@@ -16,6 +16,12 @@ def verifArq():
         return False
 
 def cadastLivro(titulo='Desconhecido', autor='Desconhecido',ano=0,genero='Desconhecido'):
+    """
+    param titulo: Título do livro\n
+    param autor: Autor do livro\n
+    param ano: Ano de lançamento\n
+    param genero: Gênero do livro
+    """
     try:
         with open(arquivo, 'at', encoding='utf-8') as dados:
             dados.write(f'{titulo};{autor};{ano};{genero}\n')
@@ -26,6 +32,9 @@ def cadastLivro(titulo='Desconhecido', autor='Desconhecido',ano=0,genero='Descon
         print(f'Erro: {erro}')
 
 def listarLivros():
+    """
+    Faz uma lista de todos os livros contidos no arquivo.
+    """
     try:
         with open(arquivo, 'rt', encoding='utf-8') as dados:
             livros = dados.readlines()
@@ -36,6 +45,10 @@ def listarLivros():
         print(f'Erro: {erro}')
 
 def buscarLivro(busca):
+    """
+    busca: Título, Autor, Ano ou Gênero.
+    return: Listagem de todos que contém busca.
+    """
     try:
         with open(arquivo,'rt',encoding='utf-8') as dados:
             livros = dados.readlines()
