@@ -56,5 +56,24 @@ def buscarLivro(busca):
                 v = l.strip().split(';')
                 if busca in l:
                     print(f'Título: {v[0]} / Autor: {v[1]} / Ano: {v[2]} / Gênero: {v[3]}')
+                else:
+                    print('Não há livros')
     except Exception as  erro:
         print(f'Erro: {erro}')
+
+def removerLivro(idx=int):
+    try:
+        with open(arquivo,'r') as ler:
+            livros = ler.readlines()
+            livros[idx-1]
+            with open(arquivo,'wt+') as dados:
+                for l in livros:
+                    f = l.strip()
+                    if l == livros[idx-1]:
+                        continue
+                    dados.write(f'{f}\n')
+    except IndexError:
+        print('Não há livro com este index.')
+    except Exception as erro:
+        print(f'Erro: {erro}')   
+

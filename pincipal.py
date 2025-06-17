@@ -31,6 +31,14 @@ while True:
             n = input('Título ou Autor: ').title().strip()
             arq.buscarLivro(n)
             menu.linha()
+        elif opç == 4:
+            arq.listarLivros()
+            try:
+                index = int(input('Digite o index do livro: '))
+            except:
+                print('Digite um valor aceitável.')
+            arq.removerLivro(index)
+            menu.linha()
         elif opç == 0:
             print('SAINDO DO PROGRAMA...')
             menu.linha()
