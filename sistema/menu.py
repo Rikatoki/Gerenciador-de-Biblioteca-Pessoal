@@ -1,11 +1,11 @@
-def linha(qnt=20, crtr='-=-'):
+def linha(qnt=30, crtr='-=-'):
     '''
     CRIADOR DE LINHAS\n
     param qnt: Valor númerico de quantas linhas deseja. (Padrão: 20)\n
     param crtr: Caractere da linha. (Padrão: -=-)
     '''
     return print(f'{crtr}'*qnt)
-def opçoes(*txt,cbç='MENU PRINCIPAL', form=60):
+def opçoes(*txt,cbç='MENU PRINCIPAL', form=90):
     '''
     CRIAÇÃO AUTOMÁTICA DO MENU\n
     param txt: Opções que queira inserir. (obrigatório) (Não há necessidade de numerar elas)\n

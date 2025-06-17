@@ -23,7 +23,11 @@ while True:
                 print(f'Erro: {erro}')
             else:
                 arq.cadastLivro(titulo,autor,ano,genero)
+        elif opç == 2:
+            arq.listarLivros()
+            menu.linha()
         elif opç == 0:
+            menu.linha()
             print('SAINDO DO PROGRAMA...')
             break
         else:
