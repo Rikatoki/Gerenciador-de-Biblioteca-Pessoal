@@ -52,16 +52,21 @@ def buscarLivro(busca):
     try:
         with open(arquivo,'rt',encoding='utf-8') as dados:
             livros = dados.readlines()
+            verificador = False
             for l in livros:
                 v = l.strip().split(';')
                 if busca in l:
                     print(f'Título: {v[0]} / Autor: {v[1]} / Ano: {v[2]} / Gênero: {v[3]}')
-                else:
-                    print('Não há livros')
+                    verificador = True
+            if verificador:
+                print('Não há livros')
     except Exception as  erro:
         print(f'Erro: {erro}')
 
-def removerLivro(idx=int):
+def removerLivro(idx:int):
+    """
+    Verifica todo conteúdo até achar o conteúdo da index e logo em seguida o apaga.
+    """
     try:
         with open(arquivo,'r') as ler:
             livros = ler.readlines()
@@ -77,3 +82,29 @@ def removerLivro(idx=int):
     except Exception as erro:
         print(f'Erro: {erro}')   
 
+def atualizarLivro(idx=int):
+    """
+    A função pegará a index e passará por cada linha para verificar a index.\n
+    Ao encontrar o conteúdo desejado, pergunta todas as informações novamente para rescreever o livro.
+    """
+    try:
+        with open(arquivo,'r', encoding='utf-8') as ler:
+            livros = ler.readlines()
+            livros[idx-1]
+            with open(arquivo,'wt+', encoding='utf-8') as dados:
+                for l in livros:
+                    if l == livros[idx-1]:
+                        f = l.strip().split(';')
+                        print(f'Título: {f[0]} / Autor: {f[1]} / Ano: {f[2]} / Gênero: {f[3]}')
+                        t = input('Título: ').strip().title()
+                        au = input('Autor: ').strip().title()
+                        ano = int(input('Ano: '))
+                        g = input('Genero: ').strip().capitalize()
+                        dados.write(f'{t};{au};{ano};{g}\n')
+                        continue
+                    f = l.strip()    
+                    dados.write(f'{f}\n')
+    except IndexError:
+        print('Não há livro com este index.')
+    except Exception as erro:
+        print(f'Erro: {erro}')

@@ -39,6 +39,14 @@ while True:
                 print('Digite um valor aceitável.')
             arq.removerLivro(index)
             menu.linha()
+        elif opç == 5:
+            try:
+                arq.listarLivros()
+                index = int(input('Index do livro: '))
+                arq.atualizarLivro(index)
+                menu.linha()
+            except Exception as erro:
+                print(f'Erro: {erro}')
         elif opç == 0:
             print('SAINDO DO PROGRAMA...')
             menu.linha()
