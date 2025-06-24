@@ -1,8 +1,5 @@
 from os import path
 class Livro:
-    '''
-    Livros formatado em: titulo ; autor ; ano ; genero
-    '''
     @classmethod
     def carregar_id(cls):
         if path.exists('dados/livro_id.txt'):
@@ -16,12 +13,10 @@ class Livro:
             f.write(str(id))
 
     def __init__(self, titulo:str, autor:str, ano:int, genero:str, id:int = None,emprestado:bool = False):
-        if id is not None:
-            self.id = id
-        else:
+        if id is None:
             id = Livro.carregar_id() + 1
             Livro.salvar_id(id)
-            self.id = id
+        self.id = id
         self.titulo = titulo.title().split()
         self.autor = autor.title().split()
         self.ano = ano

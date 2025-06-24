@@ -4,59 +4,45 @@ from datetime import date
 from json import load,dump
 class Emprestimo:
     def __init__(self):
-        self.emprestimos: list[tuple[Usuario,Livro,date,date]] = []
-
-    def cadastrar(self, usuario:Usuario, livro:Livro,data = date.today(), devolucao = None):
-        if not livro.emprestado:
-            if devolucao == None:
-                devolucao = False
-            self.emprestimos.append([usuario, livro, data, devolucao])
-            livro.emprestado = True
-            return f'Cadastro: [Livro: {livro.titulo} emprestado ao {usuario.nome}, email: {usuario.email}.]'
-        else:
-            return f'O livro {livro.titulo} não está disponível.'
-
-    def devolucao(self, id_usuario:int, id_livro:int):
-        for l in self.emprestimos:
-            if id_usuario == l[0].id and id_livro == l[1].id:
-                if not l[3]:
-                    data = date.today()
-                    l[3] = data
-                    l[1].emprestado = False
-                    return f'Livro devolvido com sucesso!'
-        return f'Não foi encontrado este registro, ou o livro já foi devolvido.'
+        self.emprestimos: list[tuple[int, int ,str, bool]] = []
         
-    def emprestimos_ativos(self):
-        ativos = False
+    def registrar(self, user:Usuario, livro:Livro, data = date.today(), devolucao = False):
+        if livro.emprestado == False:
+            livro.emprestado = True
+            self.emprestimos.append(user.id,livro.id,data.isoformat(),devolucao)
+            return True
+        return False
+
+    def devoluçao(self, id_user:int, id_livro:int):
+        sucesso = False
         for e in self.emprestimos:
-            if e[3] == False:
-                print(f'Usuario: {e[0].nome} | Livro: {e[1].titulo} | Data de entrega: {e[2]}')
+            if e[0] == id_user and e[1] == id_livro:
+                e[3] = date.today().isoformat()
+                sucesso = True
+        return sucesso
+
+    def listar_ativos(self):
+        ativos = False
+        for n in self.emprestimos:
+            if n[3] == False:
+                print(f'Usuário [{n[0]}] Livro [{n[1]}] - Data do empréstimo: {n[2]}')
                 ativos = True
         return ativos
-
-    def historico_usuario(self,user:int):
-        historico = False
-        for e in self.emprestimos:
-            if e[0].id == user:
-                print(f'Cadastro: [Livro: {e[1].titulo} emprestado ao {e[0].nome}, email: {e[0].email}.]')
-                historico = True
-        return historico
     
     def salvar(self):
         lista = []
         for e in self.emprestimos:
-            dicionario = {
-                "usuario": e[0],
-                "livro": e[1],
-                "data": e[2],
+            lista.append({
+                "id_user": e[0],
+                "id_livro": e[1],
+                "data_entrega": e[2],
                 "devolucao": e[3]
-            }
-            lista.append(dicionario)
-        with open('dados/emprestimos.json', 'w',encoding='utf-8') as arq:
-            dump(lista,arq, indent=4)
+            })
+        with open("dados/emprestimos.json", 'w', encoding='utf-8') as arq:
+            dump(sorted(lista, key= lambda d: d["data_entrega"]), arq, indent=4)
 
     def carregar(self):
-        with open('dados/emprestimos.json','r',encoding='utf-8') as arq:
+        with open("dados/emprestimos.json", 'r', encoding='utf-8') as arq:
             dados = load(arq)
-            for d  in dados:
-                self.emprestimos.append([d["usuario"], d["livro"], d["data"], d["devolucao"]])
+        for e in dados:
+            self.emprestimos.append([e["id_user"], e["id_livro"], e["data_entrega"], e["devolucao"]])
