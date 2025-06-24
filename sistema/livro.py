@@ -1,4 +1,4 @@
-from os import path
+import os
 from json import load,dump
 class Livro:
     livros: list['Livro'] = []
@@ -29,32 +29,44 @@ class Livro:
     
     @classmethod
     def from_dict(cls, data):
-        return [Livro(**d) for d in data]
+        livros = []
+        for d in data:
+            livro = cls.__new__(cls)
+            livro.id = d["id"]
+            livro.titulo = d["titulo"]
+            livro.autor = d["autor"]
+            livro.ano = d["ano"]
+            livro.genero = d["genero"]
+            livro.emprestado = d["emprestado"]
+            livros.append(livro)
+        return livros
     
     @classmethod
     def salvar(cls):
         livros = []
         for l in cls.livros:
             livros.append(l.to_dict())
+        os.makedirs('dados', exist_ok=True)
         with open('dados/livros.json', 'w', encoding='utf-8') as arq:
             dump(livros, arq, indent=2)
 
     @classmethod
     def carregar(cls):
-        if path.exists('dados/livros.json'):
+        if os.path.exists('dados/livros.json'):
             with open('dados/livros.json', 'r', encoding='utf-8') as arq:
                 dados = load(arq)
             Livro.livros = Livro.from_dict(dados)
 
     @classmethod
     def carregar_id(cls):
-        if path.exists('dados/livro_id.txt'):
+        if os.path.exists('dados/livro_id.txt'):
             with open('dados/livro_id.txt','r') as f:
                 return int(f.read())
         return 0
     
     @classmethod
     def salvar_id(cls,id):
+        os.makedirs('dados', exist_ok=True)
         with open('dados/livro_id.txt','w') as f:
             f.write(str(id))
 
