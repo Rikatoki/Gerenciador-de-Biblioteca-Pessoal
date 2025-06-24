@@ -1,0 +1,17 @@
+[
+  {
+    "titulo": [
+      "1984"
+    ],
+    "autor": [
+      "George",
+      "Orwell"
+    ],
+    "ano": 1949,
+    "genero": [
+      "Distopia"
+    ],
+    "id": 1,
+    "emprestado": false
+  }
+]

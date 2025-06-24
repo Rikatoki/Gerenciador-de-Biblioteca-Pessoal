@@ -1,17 +1,51 @@
 from os import path
 from json import load,dump
 class Livro:
-    livros = []
+    livros: list['Livro'] = []
+    
+    def __init__(self, titulo:str, autor:str, ano:int, genero:str, id:int = None,emprestado:bool = False):
+        Livro.carregar()
+        if id is None:
+            id = Livro.carregar_id() + 1
+            Livro.salvar_id(id)
+        self.id = id
+        self.titulo = titulo.title().split()
+        self.autor = autor.title().split()
+        self.ano = ano
+        self.genero = genero.title().split()
+        self.emprestado = emprestado
+        Livro.livros.append(self)
+        Livro.salvar()
+    
+    def to_dict(self):
+        return {
+            "titulo": self.titulo,
+            "autor": self.autor,
+            "ano": self.ano,
+            "genero": self.genero,
+            "id": self.id,
+            "emprestado": self.emprestado
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        return [Livro(**d) for d in data]
+    
     @classmethod
     def salvar(cls):
+        livros = []
+        for l in cls.livros:
+            livros.append(l.to_dict())
         with open('dados/livros.json', 'w', encoding='utf-8') as arq:
-            dump(cls.livros,arq, indent=2)
+            dump(livros, arq, indent=2)
+
     @classmethod
     def carregar(cls):
         if path.exists('dados/livros.json'):
             with open('dados/livros.json', 'r', encoding='utf-8') as arq:
                 dados = load(arq)
-            Livro.livros = dados
+            Livro.livros = Livro.from_dict(dados)
+
     @classmethod
     def carregar_id(cls):
         if path.exists('dados/livro_id.txt'):
@@ -24,27 +58,6 @@ class Livro:
         with open('dados/livro_id.txt','w') as f:
             f.write(str(id))
 
-    def __init__(self, titulo:str, autor:str, ano:int, genero:str, id:int = None,emprestado:bool = False):
-        Livro.carregar()
-        if id is None:
-            id = Livro.carregar_id() + 1
-            Livro.salvar_id(id)
-        self.id = id
-        self.titulo = titulo.title().split()
-        self.autor = autor.title().split()
-        self.ano = ano
-        self.genero = genero.title().split()
-        self.emprestado = emprestado
-        
-        Livro.livros.append({
-            "titulo": self.titulo,
-            "autor": self.autor,
-            "ano": self.ano,
-            "genero": self.genero,
-            "id": self.id,
-            "emprestado": self.emprestado
-        })
-        Livro.salvar()
     
     def __str__(self):
         disponivel = 'Não' if self.emprestado else 'Sim'
