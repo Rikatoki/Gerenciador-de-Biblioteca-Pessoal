@@ -1,5 +1,17 @@
 from os import path
+from json import load,dump
 class Livro:
+    livros = []
+    @classmethod
+    def salvar(cls):
+        with open('dados/livros.json', 'w', encoding='utf-8') as arq:
+            dump(cls.livros,arq, indent=2)
+    @classmethod
+    def carregar(cls):
+        if path.exists('dados/livros.json'):
+            with open('dados/livros.json', 'r', encoding='utf-8') as arq:
+                dados = load(arq)
+            Livro.livros = dados
     @classmethod
     def carregar_id(cls):
         if path.exists('dados/livro_id.txt'):
@@ -13,6 +25,7 @@ class Livro:
             f.write(str(id))
 
     def __init__(self, titulo:str, autor:str, ano:int, genero:str, id:int = None,emprestado:bool = False):
+        Livro.carregar()
         if id is None:
             id = Livro.carregar_id() + 1
             Livro.salvar_id(id)
@@ -22,21 +35,20 @@ class Livro:
         self.ano = ano
         self.genero = genero.title().split()
         self.emprestado = emprestado
-
-    def to_dict(self):
-        return {
+        
+        Livro.livros.append({
             "titulo": self.titulo,
             "autor": self.autor,
             "ano": self.ano,
             "genero": self.genero,
             "id": self.id,
             "emprestado": self.emprestado
-        }
-    
-    @classmethod
-    def from_dict(cls, data:list[dict]):
-        return [cls(**l) for l in data]
+        })
+        Livro.salvar()
     
     def __str__(self):
         disponivel = 'Não' if self.emprestado else 'Sim'
         return f'ID:{self.id} - [{self.titulo}] Por: {self.autor} | Ano: {self.ano}, Gênero: {self.genero} | Disponível: {disponivel}'
+    
+
+livro1 = Livro("1984", "George Orwell", 1949, "Distopia")
