@@ -75,5 +75,3 @@ class Livro:
         disponivel = 'Não' if self.emprestado else 'Sim'
         return f'ID:{self.id} - [{self.titulo}] Por: {self.autor} | Ano: {self.ano}, Gênero: {self.genero} | Disponível: {disponivel}'
     
-
-livro1 = Livro("1984", "George Orwell", 1949, "Distopia")
