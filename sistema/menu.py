@@ -103,12 +103,15 @@ class Menu_Emprestimo:
 ''')
     def executar(self):
         while True:
+            emprestimos = emprestimo.Emprestimo()
+            emprestimos.carregar()
             self.sub_menu()
             escolha = input('Escolha uma opção: ')
             acao = self.options.get(escolha)
             if acao:
                 sleep(0.5)
                 if escolha == "3":
+                    emprestimos.salvar()
                     break
                 acao()
             else:
