@@ -70,6 +70,11 @@ class Livro:
         with open('dados/livro_id.txt','w') as f:
             f.write(str(id))
 
+    @classmethod
+    def buscar(cls,busca:str):
+        for l in cls.livros:
+            if l.autor == busca or l.titulo == busca:
+                print(l)
     
     def __str__(self):
         disponivel = 'Não' if self.emprestado else 'Sim'

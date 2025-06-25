@@ -29,6 +29,14 @@ class Emprestimo:
                 ativos = True
         return ativos
     
+    def historico(self, id_user:int):
+        ativo = False
+        for n in self.emprestimos:
+            if n[0] == id_user:
+                print(f'Usuário [{n[0]}] Livro [{n[1]}] - Data do empréstimo: {n[2]} - Devolução: {n[3]}')
+                ativo = True
+        return ativo
+
     def salvar(self):
         lista = []
         for e in self.emprestimos:

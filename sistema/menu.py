@@ -92,7 +92,7 @@ class Menu_Emprestimo:
             "3": self.sair
         }
     def sub_menu(self):
-        print(f'''{'Listagem':^60}
+        print(f'''{'Empréstimos':^60}
 1 - Emprestar Livro
 2 - Devolução do Livro
 3 - Voltar
@@ -150,6 +150,54 @@ class Menu_Emprestimo:
             except Exception as erro:
                 print(f'Erro: {erro}')
 
+class Menu_Relatorio:
+    def __init__(self):
+        self.options = {
+            "1": self.ativos,
+            "2": self.historico,
+            "3": self.sair
+        }
+    def sub_menu(self):
+        print(f'''{'Relatórios':^60}
+1 - Relatório de empréstimos ativos
+2 - Relatório de histórico de um usuário
+3 - Voltar
+''')
+    def executar(self):
+        while True:
+            self.sub_menu()
+            escolha = input('Escolha uma opção: ')
+            acao = self.options.get(escolha)
+            if acao:
+                sleep(0.5)
+                if escolha == "3":
+                    break
+                acao()
+            else:
+                print(f'Opção inválida.')
+                sleep(0.5)
+
+    def ativos(self):
+        emprestimos = emprestimo.Emprestimo()
+        if not emprestimos.listar_ativos():
+            print('Não há empréstimos ativos.')
+        else:
+            emprestimos.listar_ativos()
+
+    def historico(self):
+        try:
+            listar = Menu_Listar()
+            emprestimos = emprestimo.Emprestimo()
+            listar.pessoas()
+            id_usuario = int(input('Verificar histórico do ID: '))
+            if not emprestimos.historico(id_usuario):
+                print(f'Não há registro desse usuário.')
+            else:
+                emprestimos.historico(id_usuario)
+        except Exception as erro:
+            print(f'Erro: {erro}')
+
+
 class MenuPrincipal:
     def __init__(self):
         self.options = {
@@ -203,9 +251,13 @@ class MenuPrincipal:
 
     def relatorios(self):
         print('')
+        relatorios = Menu_Relatorio()
+        relatorios.executar()
 
     def busca(self):
         print('')
+        bsc = input('Titulo ou Autor: ')
+        livro.Livro.buscar(bsc)
 
     def sair(self):
         print('Fechando o programa...')
