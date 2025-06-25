@@ -49,6 +49,8 @@ class Menu_Cadastro:
             print(f'Erro: {erro}')
         else:
             cadastro_usuario = usuario.Usuario(nome,email)
+    def sair(self):
+        print('')
 
 class Menu_Listar:
     def __init__(self):
@@ -83,7 +85,9 @@ class Menu_Listar:
     def pessoas():
         for u in usuario.Usuario.usuarios:
             print(u)
-
+    def sair(self):
+        print('')
+        
 class Menu_Emprestimo:
     def __init__(self):
         self.options = {
@@ -149,7 +153,9 @@ class Menu_Emprestimo:
                 emprestimos.devoluçao()
             except Exception as erro:
                 print(f'Erro: {erro}')
-
+    def sair(self):
+        print('')
+        
 class Menu_Relatorio:
     def __init__(self):
         self.options = {
@@ -196,7 +202,8 @@ class Menu_Relatorio:
                 emprestimos.historico(id_usuario)
         except Exception as erro:
             print(f'Erro: {erro}')
-
+    def sair(self):
+        print('')
 
 class MenuPrincipal:
     def __init__(self):
@@ -263,6 +270,3 @@ class MenuPrincipal:
         print('Fechando o programa...')
         sleep(0.5)
         exit()
-
-menu = MenuPrincipal()
-menu.executar()

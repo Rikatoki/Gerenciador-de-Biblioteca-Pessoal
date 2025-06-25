@@ -1,12 +1,11 @@
-from livro import Livro
-from usuario import Usuario
+from sistema import livro,usuario
 from datetime import date
 from json import load,dump
 class Emprestimo:
     def __init__(self):
         self.emprestimos: list[tuple[int, int ,str, bool]] = []
         
-    def registrar(self, user:Usuario, livro:Livro, data = date.today(), devolucao = False):
+    def registrar(self, user:usuario.Usuario, livro:livro.Livro, data = date.today(), devolucao = False):
         if livro.emprestado == False:
             livro.emprestado = True
             self.emprestimos.append(user.id,livro.id,data.isoformat(),devolucao)
